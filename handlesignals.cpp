@@ -23,14 +23,11 @@ void HandleSignals::runSlot(QString in){
     QString line;
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream stream(&file);
-//        while (!stream.atEnd()){
-//            line = stream.readLine();
-//            qDebug() << "line: " << line;
-//        }
+
         std::string file_content = stream.readAll().toUtf8().constData();
         gpr::gcode_program p = gpr::parse_gcode(file_content);
 
-        cout << p;
+        cout << p << endl;
     }
 
     file.close();
