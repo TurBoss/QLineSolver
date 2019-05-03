@@ -5,7 +5,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 
 ApplicationWindow {
-    signal runSignal(string path)
+    signal runSignal(string file_url)
 
     id: root
     visible: true
@@ -15,18 +15,18 @@ ApplicationWindow {
 
     FileDialog {
         id: fileDialog
-        title: "Please choose a file"
+        title: qsTr("Please choose GCode file")
         nameFilters: ["Gcode Files (*.ngc *.tap *.nc)"];
         folder: shortcuts.home
         onAccepted: {
-            console.log("You chose: " + fileDialog.fileUrl)
+            //console.log("You chose: " + fileDialog.fileUrl)
 
             var path = fileDialog.fileUrl.toString();
             filename.text = path
             fileDialog.close()
         }
         onRejected: {
-            console.log("Canceled")
+            // console.log("Canceled")
             fileDialog.close()
         }
     }

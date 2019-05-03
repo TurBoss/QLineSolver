@@ -1,31 +1,36 @@
 #include <iostream>
 
 #include <QFile>
+#include <QUrl>
 
 #include "handlesignals.h"
 #include "parser.h"
 
+using namespace std;
+
 void HandleSignals::runSlot(QString in){
 
-    qDebug() << in;
-
-    QFile file(in);
+    QUrl url(in);
+    QFile file(url.path());
 
     if(!file.exists()){
-        qDebug() << "NO existe el archivo " << in;
+        qDebug() << url.path() << " no encontrado ...";
+        return;
     }else{
-        qDebug() << in <<" encontrado...";
+        qDebug() << url.path() << " encontrado  ...";
     }
 
     QString line;
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream stream(&file);
-        while (!stream.atEnd()){
-            line = stream.readLine();
-            qDebug() << "linea: "<<line;
-        }
-        // std::string file_content = stream.readAll();
-        // gpr::g*/code_program p = gpr::parse_gcode(file_content);
+//        while (!stream.atEnd()){
+//            line = stream.readLine();
+//            qDebug() << "line: " << line;
+//        }
+        std::string file_content = stream.readAll().toUtf8().constData();
+        gpr::gcode_program p = gpr::parse_gcode(file_content);
+
+        cout << p;
     }
 
     file.close();
