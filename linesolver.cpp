@@ -1,3 +1,19 @@
+// This file is part of QLineSolver
+// Copyright 2019 Metal and TurBoss
+
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
 #include "linesolver.h"
 
 #include <iostream>
@@ -17,10 +33,10 @@ bool LineSolver::checkPoint(double *p1, double *p2, double *cp) {
     std::vector<double> d;
 
     std::set_difference(
-        point2.begin(), point2.end(),
-        point1.begin(), point1.end(),
-        std::back_inserter(d)
-    );
+                point2.begin(), point2.end(),
+                point1.begin(), point1.end(),
+                std::back_inserter(d)
+                );
 
     double l = d[0];
     double m = d[1];
