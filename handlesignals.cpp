@@ -1,26 +1,52 @@
 #include <iostream>
-#include "handlesignals.h"
 
-using namespace std;
+#include <QFile>
+
+#include "handlesignals.h"
+#include "parser.h"
 
 void HandleSignals::runSlot(QString in){
 
-   qDebug() << in;
+    qDebug() << in;
 
-//    LineSolver line_solver;
+    QFile file(in);
 
-//    double p1[3] = {0.0, 0.0, 0.0};
-//    double p2[3] = {1.0, 0.0, 0.0};
-//    double cp[3] = {2.0, 0.0, 0.0};
+    if(!file.exists()){
+        qDebug() << "NO existe el archivo " << in;
+    }else{
+        qDebug() << in <<" encontrado...";
+    }
 
-//    bool result = line_solver.checkPoint(p1, p2, cp);
+    QString line;
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream stream(&file);
+        while (!stream.atEnd()){
+            line = stream.readLine();
+            qDebug() << "linea: "<<line;
+        }
+        // std::string file_content = stream.readAll();
+        // gpr::g*/code_program p = gpr::parse_gcode(file_content);
+    }
 
-//    cout << "TEST TRUE = " << result << "\n";
+    file.close();
 
-//    cp[1] = 1.0;
-//    result = line_solver.checkPoint(p1, p2, cp);
+//    std::string file_contents((std::istreambuf_iterator<char>(t)),
+//                              std::istreambuf_iterator<char>());
 
-//    cout << "TEST FALSE = " << result << "\n";
+    //    LineSolver line_solver;
+
+    //    double p1[3] = {0.0, 0.0, 0.0};
+    //    double p2[3] = {1.0, 0.0, 0.0};
+    //    double cp[3] = {2.0, 0.0, 0.0};
+
+    //    bool result = line_solver.checkPoint(p1, p2, cp);
+
+    //    cout << "TEST TRUE = " << result << "\n";
+
+    //    cp[1] = 1.0;
+    //    result = line_solver.checkPoint(p1, p2, cp);
+
+    //    cout << "TEST FALSE = " << result << "\n";
 
 
 }
