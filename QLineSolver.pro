@@ -37,3 +37,7 @@ HEADERS += \
     parser.h \
     handlesignals.h \
     linesolver.h
+
+DISTFILES += \
+    LICENSE/LICENSE.md \
+    LICENSE/gpl-3.0.md
