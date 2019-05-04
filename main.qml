@@ -23,6 +23,18 @@ import QtQuick.Layouts 1.12
 ApplicationWindow {
     signal runSignal(string file_url)
 
+    function setViewer(cpx, cpy, cpz) {
+        console.log("blah: 2 " + cpx + " " + cpy + " " + cpz);
+        cp_1.text = cpx;
+        cp_2.text = cpy;
+        cp_3.text = cpz;
+    }
+
+    function setViewer2(text) {
+        console.log("blah: " + text);
+    }
+
+
     id: root
     visible: true
     width: 800
@@ -106,12 +118,12 @@ ApplicationWindow {
             x: 67
             y: 139
             width: 466
-            height: 29
+            height: 30
+            from: 0
+            to: 100
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            value: 0.5
+            value: 0
         }
-
-
     }
 
     Rectangle {
@@ -252,6 +264,7 @@ ApplicationWindow {
             }
 
             Text {
+                id: cp_1
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -260,6 +273,7 @@ ApplicationWindow {
             }
 
             Text {
+                id: cp_2
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -268,6 +282,7 @@ ApplicationWindow {
             }
 
             Text {
+                id: cp_3
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -294,17 +309,7 @@ ApplicationWindow {
             fileDialog.close()
         }
     }
-
-
 }
-
-
-
-
-
-
-
-
 
 
 

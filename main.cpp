@@ -17,7 +17,6 @@
 #include <iostream>
 
 #include <QGuiApplication>
-#include <QQuickView>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 
@@ -41,6 +40,12 @@ int main(int argc, char *argv[])
 
     QObject::connect(object, SIGNAL(runSignal(QString)),
                      &handleSignals, SLOT(runSlot(QString)));
+
+    QObject::connect(&handleSignals, SIGNAL(setViewer(QVariant, QVariant, QVariant)),
+                     object, SLOT(setViewer(QVariant, QVariant, QVariant)));
+
+    QObject::connect(&handleSignals, SIGNAL(setViewer2(QVariant)),
+                     object, SLOT(setViewer2(QVariant)));
     return app.exec();
 
 }
