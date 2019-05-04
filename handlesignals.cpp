@@ -92,11 +92,11 @@ void HandleSignals::runSlot(QString in) {
         };
 
 
-        for (auto j: p) {
+        for (block &j: p) {
 
             bool check_line = false;
 
-            for (auto k: j) {
+            for (chunk &k: j) {
                 switch(k.tp()) {
 
                 case CHUNK_TYPE_WORD_ADDRESS:
