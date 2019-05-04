@@ -23,15 +23,18 @@ import QtQuick.Layouts 1.12
 ApplicationWindow {
     signal runSignal(string file_url)
 
-    function setViewer(cpx, cpy, cpz) {
-        console.log("blah: 2 " + cpx + " " + cpy + " " + cpz);
-        cp_1.text = cpx;
-        cp_2.text = cpy;
-        cp_3.text = cpz;
-    }
+    function setViewer(p1x, p1y, p1z, p2x, p2y, p2z, cpx, cpy, cpz) {
+        p1_x.text = p1x;
+        p1_y.text = p1y;
+        p1_z.text = p1z;
 
-    function setViewer2(text) {
-        console.log("blah: " + text);
+        p2_x.text = p2x;
+        p2_y.text = p2y;
+        p2_z.text = p2z;
+
+        cp_x.text = cpx;
+        cp_y.text = cpy;
+        cp_z.text = cpz;
     }
 
 
@@ -72,6 +75,7 @@ ApplicationWindow {
             x: 37
             y: 62
             text: "Open File"
+
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             onClicked: fileDialog.visible = true
         }
@@ -200,6 +204,7 @@ ApplicationWindow {
             }
 
             Text {
+                id: p1_x
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -208,6 +213,7 @@ ApplicationWindow {
             }
 
             Text {
+                id: p1_y
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -216,6 +222,7 @@ ApplicationWindow {
             }
 
             Text {
+                id: p1_z
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -232,6 +239,7 @@ ApplicationWindow {
             }
 
             Text {
+                id: p2_x
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -240,6 +248,7 @@ ApplicationWindow {
             }
 
             Text {
+                id: p2_y
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -248,6 +257,7 @@ ApplicationWindow {
             }
 
             Text {
+                id: p2_z
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -264,7 +274,7 @@ ApplicationWindow {
             }
 
             Text {
-                id: cp_1
+                id: cp_x
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -273,7 +283,7 @@ ApplicationWindow {
             }
 
             Text {
-                id: cp_2
+                id: cp_y
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20
@@ -282,7 +292,7 @@ ApplicationWindow {
             }
 
             Text {
-                id: cp_3
+                id: cp_z
                 color: "orange"
                 text: qsTr("0.000")
                 font.pointSize: 20

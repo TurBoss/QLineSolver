@@ -40,4 +40,5 @@ HEADERS += \
 
 DISTFILES += \
     LICENSE/LICENSE.md \
-    LICENSE/gpl-3.0.md
+    LICENSE/gpl-3.0.md \
+    example/sample.ngc

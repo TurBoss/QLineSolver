@@ -25,9 +25,9 @@ class HandleSignals : public QObject
     Q_OBJECT
 
 signals:
-    void setViewer(QVariant cpx, QVariant cpy, QVariant cpz);
-    void setViewer2(QVariant text);
-
+    void setViewer(QVariant p1x, QVariant p1y, QVariant p1z,
+                   QVariant p2x, QVariant p2y, QVariant p2z,
+                   QVariant cpx, QVariant cpy, QVariant cpz);
 public slots:
     void runSlot(QString in);
 

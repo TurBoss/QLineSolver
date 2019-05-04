@@ -54,15 +54,15 @@ void HandleSignals::runSlot(QString in) {
         chunk g0 = make_word_int('G', 0);
         chunk g1 = make_word_int('G', 1);
 
-        chunk x_point_1 = make_word_double('X', 0.0);
+        chunk x_point_1 = make_word_double('X', 1.0);
         chunk y_point_1 = make_word_double('Y', 0.0);
         chunk z_point_1 = make_word_double('Z', 0.0);
 
-        chunk x_point_2 = make_word_double('X', 0.0);
+        chunk x_point_2 = make_word_double('X', 2.0);
         chunk y_point_2 = make_word_double('Y', 0.0);
         chunk z_point_2 = make_word_double('Z', 0.0);
 
-        chunk x_point_c = make_word_double('X', 0.0);
+        chunk x_point_c = make_word_double('X', 3.0);
         chunk y_point_c = make_word_double('Y', 0.0);
         chunk z_point_c = make_word_double('Z', 0.0);
 
@@ -85,7 +85,7 @@ void HandleSignals::runSlot(QString in) {
 
         vector<block>::iterator block_it;
         for (block_it = p.begin(); block_it != p.end(); ++block_it){
-//            cout << *block_it << endl;
+            //            cout << *block_it << endl;
 
             vector<chunk>::iterator chunk_it;
             for (chunk_it = block_it->begin(); chunk_it != block_it->end(); ++chunk_it) {
@@ -110,15 +110,25 @@ void HandleSignals::runSlot(QString in) {
                 }
 
 
-//                bool result = line_solver.checkPoint(p1, p2, cp);
-//                cout << "TEST Point = " << result << "\n";
+                cout << "CHECK POINT" << endl;
 
+                bool result = line_solver.checkPoint(p1, p2, cp);
 
+                cout << "result = " << result << endl;
+
+                p1[0] = p2[0];
+                p1[1] = p2[1];
+                p1[2] = p2[2];
+
+                p2[0] = cp[0];
+                p2[1] = cp[1];
+                p2[2] = cp[2];
             }
 
-            emit setViewer(cp[0], cp[1], cp[2]);
-            emit setViewer2("pedo");
-            qDebug() << "emitSignal";
+            emit setViewer(p1[0], p1[1], p1[2],
+                    p2[0], p2[1], p2[2],
+                    cp[0], cp[1], cp[2]
+                    );
         }
     }
 
