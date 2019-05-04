@@ -43,7 +43,9 @@ int main(int argc, char *argv[])
                      &handleSignals, SLOT(runSlot(QString))
                      );
 
-    QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
+    QObject::connect(&engine, &QQmlApplicationEngine::quit,
+                     &app, &QGuiApplication::quit
+                     );
 
     return app.exec();
 }

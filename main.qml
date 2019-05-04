@@ -59,12 +59,13 @@ ApplicationWindow {
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
         Button {
-            id: button
-            x: 764
-            y: 17
-            width: 21
-            height: 22
-            text: qsTr("X")
+            id: close_button
+            x: 612
+            y: 151
+            width: 130
+            height: 40
+            text: qsTr("Quit")
+            spacing: 8
             onClicked: messageDialogQuit.open()
         }
 
@@ -80,8 +81,9 @@ ApplicationWindow {
         Button {
             id: open_button
             x: 37
-            y: 62
-            text: "Open File"
+            y: 151
+            width: 130
+            text: "Load"
 
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             onClicked: fileDialog.visible = true
@@ -117,23 +119,12 @@ ApplicationWindow {
         }
 
         Button {
-            x: 433
-            y: 62
-            text: "run optimization"
+            x: 335
+            y: 151
+            width: 130
+            text: "Run"
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             onClicked: runSignal(qsTr(filename.text))
-        }
-
-        ProgressBar {
-            id: runProgressBar
-            x: 67
-            y: 139
-            width: 466
-            height: 30
-            from: 0
-            to: 100
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            value: 0
         }
 
 
