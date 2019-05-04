@@ -19,6 +19,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
+#include <QQmlEngine>
 
 #include "linesolver.h"
 #include "handlesignals.h"
@@ -42,13 +43,7 @@ int main(int argc, char *argv[])
                      &handleSignals, SLOT(runSlot(QString))
                      );
 
-    QObject::connect(&handleSignals, SIGNAL(setViewer(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)),
-                     object, SLOT(setViewer(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant))
-                     );
+    QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
 
-    QObject::connect(&handleSignals, SIGNAL(setViewer2(QVariant)),
-                     object, SLOT(setViewer2(QVariant))
-                     );
     return app.exec();
-
 }

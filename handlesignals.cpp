@@ -15,6 +15,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <iostream>
+#include <iomanip>
 
 #include <QFile>
 #include <QUrl>
@@ -28,13 +29,17 @@ using namespace gpr;
 
 void HandleSignals::runSlot(QString in) {
 
+
+    cout << fixed;
+    cout << setprecision(3);
+
     QUrl url(in);
     QFile file(url.path());
 
     LineSolver line_solver;
 
     if(!file.exists()) {
-        qDebug() << url.path() << " no encontrado ...";
+        qDebug() << url.path() << " not found ...";
         return;
     }
 
@@ -51,21 +56,24 @@ void HandleSignals::runSlot(QString in) {
 
         // cout << p << endl;
 
-        chunk g0 = make_word_int('G', 0);
-        chunk g1 = make_word_int('G', 1);
+        const chunk g0 = make_word_int('G', 0);
+        const chunk g1 = make_word_int('G', 1);
 
-        chunk x_point_1 = make_word_double('X', 1.0);
+        const chunk x_word = make_isolated_word('X');
+        const chunk y_word = make_isolated_word('Y');
+        const chunk z_word = make_isolated_word('Z');
+
+        chunk x_point_1 = make_word_double('X', 0.0);
         chunk y_point_1 = make_word_double('Y', 0.0);
         chunk z_point_1 = make_word_double('Z', 0.0);
 
-        chunk x_point_2 = make_word_double('X', 2.0);
+        chunk x_point_2 = make_word_double('X', 0.0);
         chunk y_point_2 = make_word_double('Y', 0.0);
         chunk z_point_2 = make_word_double('Z', 0.0);
 
-        chunk x_point_c = make_word_double('X', 3.0);
+        chunk x_point_c = make_word_double('X', 0.0);
         chunk y_point_c = make_word_double('Y', 0.0);
         chunk z_point_c = make_word_double('Z', 0.0);
-
 
         double p1[3] = {
             x_point_1.get_address().double_value(),
@@ -83,38 +91,77 @@ void HandleSignals::runSlot(QString in) {
             z_point_c.get_address().double_value()
         };
 
-        vector<block>::iterator block_it;
-        for (block_it = p.begin(); block_it != p.end(); ++block_it){
-            //            cout << *block_it << endl;
 
-            vector<chunk>::iterator chunk_it;
-            for (chunk_it = block_it->begin(); chunk_it != block_it->end(); ++chunk_it) {
+        for (auto j: p) {
 
-                chunk x_word = make_isolated_word('X');
-                chunk y_word = make_isolated_word('Y');
-                chunk z_word = make_isolated_word('Z');
+            bool check_line = false;
 
-                if (*chunk_it == x_word){
-                    double temp_x = chunk_it->get_address().double_value();
-                    cp[0] = temp_x;
+            for (auto k: j) {
+                switch(k.tp()) {
+
+                case CHUNK_TYPE_WORD_ADDRESS:
+                    // cout << "WORD ADDRESS ";
+                    // cout << k.get_word() << endl;
+
+                    if (k.get_word() == 'X')
+                    {
+                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE)
+                        {
+                            // cout << "X " << k.get_address().double_value() << endl;
+                            cp[0] = k.get_address().double_value();
+                        } else {
+                            // cout << "X " << k.get_address().int_value() << endl;
+                            cp[0] = k.get_address().int_value();
+                        }
+                        check_line = true;
+                    }
+                    else if (k.get_word() == 'Y')
+                    {
+                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE)
+                        {
+                            // cout << "Y " << k.get_address().double_value() << endl;
+                            cp[1] = k.get_address().double_value();
+                        } else {
+                            // cout << "Y " << k.get_address().int_value() << endl;
+                            cp[1] = k.get_address().int_value();
+                        }
+                        check_line = true;
+
+                    }
+                    else if (k.get_word() == 'Z')
+                    {
+                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE)
+                        {
+                            // cout << "Z " << k.get_address().double_value() << endl;
+                            cp[2] = k.get_address().double_value();
+                        } else {
+                            // cout << "Z " << k.get_address().int_value() << endl;
+                            cp[2] = k.get_address().int_value();
+                        }
+                        check_line = true;
+                    }
+                    break;
+
+                case CHUNK_TYPE_WORD:
+                    // cout << "WORD" << endl;
+                    // cout << k.get_word() << endl;
+                    break;
+
+                default:
+                    cout << k << endl;
                 }
+            }
+            if (check_line){
 
-                if (*chunk_it == y_word){
-                    double temp_y = chunk_it->get_address().double_value();
-                    cp[1] = temp_y;
-                }
+                // cout << "CHECK POINT" << endl;
 
-                if (*chunk_it == z_word){
-                    double temp_z = chunk_it->get_address().double_value();
-                    cp[2] = temp_z;
-                }
+                cout << "X" << p1[0] << 'Y' << p1[1] << 'Z' << p1[2] << endl;
+                cout << "X" << p2[0] << 'Y' << p2[1] << 'Z' << p2[2] << endl;
+                cout << "X" << cp[0] << 'Y' << cp[1] << 'Z' << cp[2] << endl;
 
+                // bool result = line_solver.checkPoint(p1, p2, cp);
 
-                cout << "CHECK POINT" << endl;
-
-                bool result = line_solver.checkPoint(p1, p2, cp);
-
-                cout << "result = " << result << endl;
+                // cout << "result = " << result << endl;
 
                 p1[0] = p2[0];
                 p1[1] = p2[1];
@@ -123,18 +170,13 @@ void HandleSignals::runSlot(QString in) {
                 p2[0] = cp[0];
                 p2[1] = cp[1];
                 p2[2] = cp[2];
-            }
 
-            emit setViewer(p1[0], p1[1], p1[2],
-                    p2[0], p2[1], p2[2],
-                    cp[0], cp[1], cp[2]
-                    );
+            }
         }
     }
 
     else {
-        qDebug() << url.path() << " error de lectura ...";
-        return;
+        qDebug() << url.path() << " read error ...";
     }
 
     file.close();

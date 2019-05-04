@@ -23,43 +23,30 @@ import QtQuick.Layouts 1.12
 ApplicationWindow {
     signal runSignal(string file_url)
 
-    function setViewer(p1x, p1y, p1z, p2x, p2y, p2z, cpx, cpy, cpz) {
-        p1_x.text = p1x;
-        p1_y.text = p1y;
-        p1_z.text = p1z;
-
-        p2_x.text = p2x;
-        p2_y.text = p2y;
-        p2_z.text = p2z;
-
-        cp_x.text = cpx;
-        cp_y.text = cpy;
-        cp_z.text = cpz;
-    }
-
-
     id: root
     visible: true
     width: 800
-    height: 600
+    height: 250
     color: "#99000000"
     title: qsTr("QLineSolver")
 
-    Image { source: "images/bg.png"; fillMode: Image.PreserveAspectCrop; anchors.fill: parent;  opacity: 0.3 }
+    flags: Qt.Window | Qt.FramelessWindowHint
 
     Rectangle {
         id: rectangle1
-        x: 100
-        y: 30
-        width: 600
-        height: 200
-        color: "#b3424242"
-        radius: 15
 
+        width: parent.width
+        height: parent.height
+        color: "#00000000"
+        radius: 20
+        anchors.rightMargin: 97
+        anchors.bottomMargin: 16
+        anchors.leftMargin: 97
+        anchors.topMargin: 16
         gradient: Gradient {
             GradientStop {
                 position: 0
-                color: "#b3424242"
+                color: "#00000000"
             }
 
             GradientStop {
@@ -68,10 +55,30 @@ ApplicationWindow {
             }
         }
 
-        border.width: 2
+        border.width: 3
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
         Button {
+            id: button
+            x: 764
+            y: 17
+            width: 21
+            height: 22
+            text: qsTr("X")
+            onClicked: messageDialogQuit.open()
+        }
+
+        Image {
+            anchors.rightMargin: 0;
+            anchors.bottomMargin: 0;
+            source: "images/bg.png";
+            fillMode: Image.PreserveAspectCrop;
+            anchors.fill: parent;
+            opacity: 0.3
+        }
+
+        Button {
+            id: open_button
             x: 37
             y: 62
             text: "Open File"
@@ -128,178 +135,8 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             value: 0
         }
-    }
 
-    Rectangle {
-        id: rectangle
-        x: 100
-        y: 250
-        width: 600
-        height: 320
-        color: "#b3424242"
-        radius: 15
 
-        gradient: Gradient {
-            GradientStop {
-                position: 0
-                color: "#b3424242"
-            }
-
-            GradientStop {
-                position: 1
-                color: "#000000"
-            }
-        }
-
-        border.width: 2
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-        GridLayout {
-
-            id: grid_layout
-            anchors.fill: parent
-            rows: 0
-
-            columnSpacing: 44
-            rowSpacing: 10
-
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            columns: 4
-
-            Text {
-                color: "orange"
-                text: qsTr("Points")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                font.bold: true
-            }
-            Text {
-                color: "orange"
-                text: qsTr("X")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                font.bold: true
-                horizontalAlignment: Text.AlignLeft
-            }
-            Text {
-                color: "orange"
-                text: qsTr("Y")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                font.bold: true
-            }
-            Text {
-                color: "orange"
-                text: qsTr("Z")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                font.bold: true
-            }
-            Text {
-                color: "orange"
-                text: qsTr("First")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                font.bold: true
-            }
-
-            Text {
-                id: p1_x
-                color: "orange"
-                text: qsTr("0.000")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                rightPadding: 10
-            }
-
-            Text {
-                id: p1_y
-                color: "orange"
-                text: qsTr("0.000")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                rightPadding: 10
-            }
-
-            Text {
-                id: p1_z
-                color: "orange"
-                text: qsTr("0.000")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                rightPadding: 10
-            }
-
-            Text {
-                color: "orange"
-                text: qsTr("Second")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                font.bold: true
-            }
-
-            Text {
-                id: p2_x
-                color: "orange"
-                text: qsTr("0.000")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                rightPadding: 10
-            }
-
-            Text {
-                id: p2_y
-                color: "orange"
-                text: qsTr("0.000")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                rightPadding: 10
-            }
-
-            Text {
-                id: p2_z
-                color: "orange"
-                text: qsTr("0.000")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                rightPadding: 10
-            }
-
-            Text {
-                color: "orange"
-                text: qsTr("Check")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                font.bold: true
-            }
-
-            Text {
-                id: cp_x
-                color: "orange"
-                text: qsTr("0.000")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                rightPadding: 10
-            }
-
-            Text {
-                id: cp_y
-                color: "orange"
-                text: qsTr("0.000")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                rightPadding: 10
-            }
-
-            Text {
-                id: cp_z
-                color: "orange"
-                text: qsTr("0.000")
-                font.pointSize: 20
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                rightPadding: 10
-            }
-        }
     }
 
     FileDialog {
@@ -318,6 +155,23 @@ ApplicationWindow {
             // console.log("Canceled")
             fileDialog.close()
         }
+    }
+
+    MessageDialog {
+        id: messageDialogQuit
+        title: "Quit?"
+        icon: StandardIcon.Question
+        text: "Really?."
+
+        standardButtons: StandardButton.Yes | StandardButton.No
+        // Component.onCompleted: visible = true
+        onYes: Qt.quit()
+        // onNo: console.log("didn't copy")
+    }
+
+    onClosing:{
+        close.accepted = false
+        onTriggered: messageDialogQuit.open()
     }
 }
 
