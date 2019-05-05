@@ -69,6 +69,7 @@ ApplicationWindow {
 
         width: parent.width
         height: parent.height
+        color: "#00000000"
         radius: 20
         gradient: Gradient {
             GradientStop {
@@ -89,18 +90,6 @@ ApplicationWindow {
         border.width: 3
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-        Button {
-            id: close_button
-            x: 418
-            y: 151
-            width: 130
-            height: 40
-            text: qsTr("Quit")
-            z: 1
-            spacing: 8
-            onClicked: messageDialogQuit.open()
-        }
-
         Image {
             z: -1
             anchors.rightMargin: 0;
@@ -111,28 +100,17 @@ ApplicationWindow {
             opacity: 0.3
         }
 
-        Button {
-            id: open_button
-            x: 45
-            y: 151
-            width: 130
-            text: "Load"
-
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            onClicked: fileDialog.visible = true
-        }
-
         Text {
             id: element
-            x: 135
-            y: 25
+            x: 206
+            y: 140
             width: 331
             height: 58
             color: "#ffa500"
             text: qsTr("QLineSolver")
             visible: true
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignBottom
+            horizontalAlignment: Text.AlignLeft
             font.family: "Arial"
             font.bold: true
             z: 2
@@ -140,13 +118,13 @@ ApplicationWindow {
         }
 
         Text {
-            x: 48
-            y: 78
+            x: 206
+            y: 44
             width: 125
             height: 27
             color: "orange"
             text: qsTr("File loaded:")
-            verticalAlignment: Text.AlignVCenter
+            verticalAlignment: Text.AlignBottom
             horizontalAlignment: Text.AlignLeft
             Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
             font.pointSize: 18
@@ -156,29 +134,100 @@ ApplicationWindow {
         Text {
             color: "orange"
             id: filename
-            x: 174
-            y: 82
-            width: 404
+            x: 206
+            y: 99
+            width: 336
             height: 27
             text: qsTr("None")
             font.bold: true
-            verticalAlignment: Text.AlignVCenter
+            verticalAlignment: Text.AlignBottom
             horizontalAlignment: Text.AlignLeft
             font.pointSize: 10
             Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
         }
 
-        Button {
-            x: 235
-            y: 151
-            width: 130
-            text: "Run"
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            onClicked: runSignal(qsTr(filename.text))
+        Rectangle {
+            id: load_rectangle
+            x: 32
+            y: 38
+            width: 150
+            height: 39
+            color: "#cc000000"
+            radius: 20
+            border.width: 3
+
+            MouseArea {
+                id: load_mouseArea
+                anchors.fill: parent;
+                onClicked: fileDialog.visible = true
+            }
+
+            Text {
+                id: load_text
+                anchors.fill: parent;
+                color: "#ffa500"
+                text: qsTr("LOAD")
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.bold: true
+                font.pixelSize: 17
+            }
+        }
+        Rectangle {
+            id: run_rectangle
+            x: 32
+            y: 93
+            width: 150
+            height: 39
+            color: "#cc000000"
+            radius: 20
+            border.width: 3
+
+            MouseArea {
+                id: run_mouseArea
+                anchors.fill: parent;
+                onClicked: runSignal(qsTr(filename.text))
+            }
+
+            Text {
+                id: run_text
+                anchors.fill: parent;
+                color: "#ffa500"
+                text: qsTr("RUN")
+                font.pixelSize: 17
+                horizontalAlignment: Text.AlignHCenter
+                font.bold: true
+                verticalAlignment: Text.AlignVCenter
+            }
         }
 
+        Rectangle {
+            id: quit_rectangle
+            x: 32
+            y: 149
+            width: 150
+            height: 39
+            color: "#cc000000"
+            radius: 20
+            border.width: 3
+            MouseArea {
+                id: quit_mouseArea
+                anchors.fill: parent;
+                onClicked: messageDialogQuit.open()
+            }
 
+            Text {
+                id: quit_text
+                anchors.fill: parent;
+                color: "#ffa500"
+                text: qsTr("QUIT")
+                font.pixelSize: 17
+                horizontalAlignment: Text.AlignHCenter
+                font.bold: true
+                verticalAlignment: Text.AlignVCenter
+            }
 
+        }
     }
 
     FileDialog {
