@@ -25,24 +25,51 @@ ApplicationWindow {
 
     id: root
     visible: true
-    width: 800
-    height: 250
-    color: "#99000000"
+    width: 600
+    height: 225
+
+    maximumHeight: height
+    maximumWidth: width
+
+    minimumHeight: height
+    minimumWidth: width
+
+    color: "#00000000"
     title: qsTr("QLineSolver")
 
     flags: Qt.Window | Qt.FramelessWindowHint
+
+    MouseArea {
+        anchors.fill: parent;
+        property variant clickPos: "1,1"
+
+        onPressed: {
+            clickPos = Qt.point(mouse.x,mouse.y)
+        }
+
+        onPositionChanged: {
+            var delta = Qt.point(mouse.x-clickPos.x, mouse.y-clickPos.y)
+            var new_x = root.x + delta.x
+            var new_y = root.y + delta.y
+            if (new_y <= 0)
+                root.visibility = Window.Maximized
+            else
+            {
+                if (root.visibility === Window.Maximized)
+                    root.visibility = Window.Windowed
+                root.x = new_x
+                root.y = new_y
+            }
+        }
+    }
+
 
     Rectangle {
         id: rectangle1
 
         width: parent.width
         height: parent.height
-        color: "#00000000"
         radius: 20
-        anchors.rightMargin: 97
-        anchors.bottomMargin: 16
-        anchors.leftMargin: 97
-        anchors.topMargin: 16
         gradient: Gradient {
             GradientStop {
                 position: 0
@@ -54,22 +81,28 @@ ApplicationWindow {
                 color: "#000000"
             }
         }
+        anchors.rightMargin: 97
+        anchors.bottomMargin: 16
+        anchors.leftMargin: 97
+        anchors.topMargin: 16
 
         border.width: 3
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
         Button {
             id: close_button
-            x: 612
+            x: 418
             y: 151
             width: 130
             height: 40
             text: qsTr("Quit")
+            z: 1
             spacing: 8
             onClicked: messageDialogQuit.open()
         }
 
         Image {
+            z: -1
             anchors.rightMargin: 0;
             anchors.bottomMargin: 0;
             source: "images/bg.png";
@@ -80,7 +113,7 @@ ApplicationWindow {
 
         Button {
             id: open_button
-            x: 37
+            x: 45
             y: 151
             width: 130
             text: "Load"
@@ -90,8 +123,25 @@ ApplicationWindow {
         }
 
         Text {
-            x: 24
-            y: 17
+            id: element
+            x: 135
+            y: 25
+            width: 331
+            height: 58
+            color: "#ffa500"
+            text: qsTr("QLineSolver")
+            visible: true
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.family: "Arial"
+            font.bold: true
+            z: 2
+            font.pixelSize: 48
+        }
+
+        Text {
+            x: 48
+            y: 78
             width: 125
             height: 27
             color: "orange"
@@ -106,8 +156,8 @@ ApplicationWindow {
         Text {
             color: "orange"
             id: filename
-            x: 150
-            y: 21
+            x: 174
+            y: 82
             width: 404
             height: 27
             text: qsTr("None")
@@ -119,13 +169,14 @@ ApplicationWindow {
         }
 
         Button {
-            x: 335
+            x: 235
             y: 151
             width: 130
             text: "Run"
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             onClicked: runSignal(qsTr(filename.text))
         }
+
 
 
     }

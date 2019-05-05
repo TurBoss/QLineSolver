@@ -29,10 +29,6 @@ using namespace gpr;
 
 void HandleSignals::runSlot(QString in) {
 
-
-    cout << fixed;
-    cout << setprecision(3);
-
     QUrl url(in);
     QFile file(url.path());
 
@@ -58,10 +54,8 @@ void HandleSignals::runSlot(QString in) {
 
         const chunk g0 = make_word_int('G', 0);
         const chunk g1 = make_word_int('G', 1);
-
-        const chunk x_word = make_isolated_word('X');
-        const chunk y_word = make_isolated_word('Y');
-        const chunk z_word = make_isolated_word('Z');
+        const chunk g2 = make_word_int('G', 2);
+        const chunk g3 = make_word_int('G', 3);
 
         chunk x_point_1 = make_word_double('X', 0.0);
         chunk y_point_1 = make_word_double('Y', 0.0);
@@ -107,10 +101,10 @@ void HandleSignals::runSlot(QString in) {
                     {
                         if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE)
                         {
-                            // cout << "X " << k.get_address().double_value() << endl;
+                            printf("X WORD %f\n", k.get_address().double_value());
                             cp[0] = k.get_address().double_value();
                         } else {
-                            // cout << "X " << k.get_address().int_value() << endl;
+                            printf("X WORD %d\n", k.get_address().int_value());
                             cp[0] = k.get_address().int_value();
                         }
                         check_line = true;
@@ -119,10 +113,10 @@ void HandleSignals::runSlot(QString in) {
                     {
                         if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE)
                         {
-                            // cout << "Y " << k.get_address().double_value() << endl;
+                            printf("Y WORD %f\n", k.get_address().double_value());
                             cp[1] = k.get_address().double_value();
                         } else {
-                            // cout << "Y " << k.get_address().int_value() << endl;
+                            printf("Y WORD %d\n", k.get_address().int_value());
                             cp[1] = k.get_address().int_value();
                         }
                         check_line = true;
@@ -132,10 +126,10 @@ void HandleSignals::runSlot(QString in) {
                     {
                         if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE)
                         {
-                            // cout << "Z " << k.get_address().double_value() << endl;
+                            printf("Z WORD %f\n", k.get_address().double_value());
                             cp[2] = k.get_address().double_value();
                         } else {
-                            // cout << "Z " << k.get_address().int_value() << endl;
+                            printf("Z WORD %d\n", k.get_address().int_value());
                             cp[2] = k.get_address().int_value();
                         }
                         check_line = true;
@@ -143,25 +137,26 @@ void HandleSignals::runSlot(QString in) {
                     break;
 
                 case CHUNK_TYPE_WORD:
-                    // cout << "WORD" << endl;
-                    // cout << k.get_word() << endl;
+
+                    printf("WORD %d\n", k.get_word());
+
                     break;
 
                 default:
-                    cout << k << endl;
+                    break;
                 }
             }
             if (check_line){
 
                 // cout << "CHECK POINT" << endl;
 
-                cout << "X" << p1[0] << 'Y' << p1[1] << 'Z' << p1[2] << endl;
-                cout << "X" << p2[0] << 'Y' << p2[1] << 'Z' << p2[2] << endl;
-                cout << "X" << cp[0] << 'Y' << cp[1] << 'Z' << cp[2] << endl;
+                printf("P1 X %f Y %f Z %f\n", p1[0], p1[1], p1[2]);
+                printf("P2 X %f Y %f Z %f\n", p2[0], p2[1], p2[2]);
+                printf("CP X %f Y %f Z %f\n", cp[0], cp[1], cp[2]);
 
-                // bool result = line_solver.checkPoint(p1, p2, cp);
+                bool result = line_solver.checkPoint(p1, p2, cp);
 
-                // cout << "result = " << result << endl;
+                printf("result = %d\n", result);
 
                 p1[0] = p2[0];
                 p1[1] = p2[1];

@@ -30,7 +30,7 @@ bool LineSolver::checkPoint(double *p1, double *p2, double *cp) {
 
     std::vector<double> point1 {p1[0], p1[1], p1[2]};
     std::vector<double> point2 {p2[0], p2[1], p2[2]};
-    std::vector<double> d;
+    std::vector<double> d {0.0, 0.0, 0.0};
 
     std::set_difference(
                 point2.begin(), point2.end(),
