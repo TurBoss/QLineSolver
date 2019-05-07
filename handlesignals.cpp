@@ -93,6 +93,7 @@ void HandleSignals::runSlot(QString in) {
         for (block &j: p) {
 
             bool check_line = false;
+            string gcode_line = "";
 
             for (chunk &k: j) {
                 switch(k.tp()) {
@@ -102,12 +103,7 @@ void HandleSignals::runSlot(QString in) {
                     // cout << k.get_word() << endl;
 
                     if (k.get_word() == 'X') {
-
-                    }
-                    else if (k.get_word() == 'X')
-                    {
-                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE)
-                        {
+                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
                             // printf("X WORD %f\n", k.get_address().double_value());
                             cp[0] = k.get_address().double_value();
                         } else {
@@ -116,10 +112,8 @@ void HandleSignals::runSlot(QString in) {
                         }
                         check_line = true;
                     }
-                    else if (k.get_word() == 'Y')
-                    {
-                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE)
-                        {
+                    else if (k.get_word() == 'Y') {
+                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
                             // printf("Y WORD %f\n", k.get_address().double_value());
                             cp[1] = k.get_address().double_value();
                         } else {
@@ -129,10 +123,8 @@ void HandleSignals::runSlot(QString in) {
                         check_line = true;
 
                     }
-                    else if (k.get_word() == 'Z')
-                    {
-                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE)
-                        {
+                    else if (k.get_word() == 'Z') {
+                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
                             // printf("Z WORD %f\n", k.get_address().double_value());
                             cp[2] = k.get_address().double_value();
                         } else {
@@ -151,9 +143,8 @@ void HandleSignals::runSlot(QString in) {
                     printf("WORD %d\n", k.get_word());
 
                     break;
-
                 case CHUNK_TYPE_COMMENT:
-                    cout << k << endl;
+                    printf("COMMENT %s\n", k.get_comment_text().c_str());
                     break;
 
                 default:
