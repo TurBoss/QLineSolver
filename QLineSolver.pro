@@ -1,4 +1,5 @@
 QT += quick
+QT += multimedia
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -46,4 +47,17 @@ DISTFILES += \
     README.md \
     example/sample.ngc \
     images/bg.svg \
-    main.qml
+    main.qml \
+    music/CT_BOSS.MOD \
+    music/Cv_boss.mod \
+    music/FINALBAT.s3m \
+    music/Fr_boss.mod \
+    music/ICEFRONT.S3M \
+    music/Wood.s3m \
+    music/amblight.xm \
+    music/cave.xm \
+    music/cave06.s3m \
+    music/cavern.xm \
+    music/fear2.mod \
+    music/iller_knarkloader_final.xm \
+    music/rpg_bat1.xm

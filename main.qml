@@ -19,9 +19,15 @@ import QtQuick.Window 2.12
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
+import QtMultimedia 5.8
 
 ApplicationWindow {
     signal runSignal(string file_url)
+
+    signal volumeSignal()
+    signal pauseSignal()
+    signal playSignal()
+    signal nextSignal()
 
     id: root
     visible: true
@@ -38,6 +44,11 @@ ApplicationWindow {
     title: qsTr("QLineSolver")
 
     flags: Qt.Window | Qt.FramelessWindowHint
+
+    Audio {
+        id: audioPlayer
+        source: "music/jaume.wav"
+    }
 
     MouseArea {
         anchors.fill: parent;
@@ -69,7 +80,7 @@ ApplicationWindow {
 
         width: parent.width
         height: parent.height
-        color: "#00000000"
+        color: "#000000"
         radius: 20
         gradient: Gradient {
             GradientStop {
@@ -115,6 +126,74 @@ ApplicationWindow {
             font.bold: true
             z: 2
             font.pixelSize: 48
+
+            Rectangle {
+                id: rectangle
+                x: 242
+                y: -128
+                width: 140
+                height: 45
+                color: "#b3000000"
+                radius: 20
+                border.color: "#000000"
+                opacity: 1
+                border.width: 3
+
+                Image {
+                    id: image
+                    x: 16
+                    y: 4
+                    width: 110
+                    height: 35
+                    source: "images/miniplayer.svg"
+                    fillMode: Image.Stretch
+
+                    Image {
+                        id: image1
+                        x: 12
+                        y: 5
+                        width: 19
+                        height: 25
+                        source: "images/volumen.svg"
+                        fillMode: Image.PreserveAspectFit
+                    }
+                }
+
+                MouseArea {
+                    id: volumeArea
+                    x: 16
+                    y: 8
+                    width: 33
+                    height: 27
+                    onClicked: {audioPlayer.volume = 1.0}
+                }
+
+                MouseArea {
+                    id: pauseArea
+                    x: 49
+                    y: 9
+                    width: 22
+                    height: 26
+                    onClicked: {audioPlayer.pause()}
+                }
+
+                MouseArea {
+                    id: playArea
+                    x: 72
+                    y: 9
+                    width: 25
+                    height: 26
+                    onClicked: {audioPlayer.play()}
+                }
+
+                MouseArea {
+                    id: nextArea
+                    x: 96
+                    y: 9
+                    width: 25
+                    height: 26
+                }
+            }
         }
 
         Text {

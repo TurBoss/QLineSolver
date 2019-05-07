@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>images/bg.svg</file>
+        <file>images/player.svg</file>
+        <file>images/miniplayer.svg</file>
+        <file>images/volumen.svg</file>
     </qresource>
 </RCC>
