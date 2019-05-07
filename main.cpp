@@ -30,6 +30,10 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    app.setOrganizationName("Jauria Studios INC.");
+    app.setOrganizationDomain("jauria.studios.inc");
+    app.setApplicationName("QLineSolver");
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QQmlEngine engine;
 

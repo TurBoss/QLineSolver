@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>images/bg.png</file>
+        <file>images/bg.svg</file>
     </qresource>
 </RCC>

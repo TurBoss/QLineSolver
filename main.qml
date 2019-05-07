@@ -94,10 +94,10 @@ ApplicationWindow {
             z: -1
             anchors.rightMargin: 0;
             anchors.bottomMargin: 0;
-            source: "images/bg.png";
+            source: "images/bg.svg"
             fillMode: Image.PreserveAspectCrop;
             anchors.fill: parent;
-            opacity: 0.3
+            opacity: 0.8
         }
 
         Text {
@@ -221,6 +221,10 @@ ApplicationWindow {
                 anchors.fill: parent;
                 color: "#ffa500"
                 text: qsTr("QUIT")
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 0
+                anchors.leftMargin: 0
+                anchors.topMargin: 0
                 font.pixelSize: 17
                 horizontalAlignment: Text.AlignHCenter
                 font.bold: true
