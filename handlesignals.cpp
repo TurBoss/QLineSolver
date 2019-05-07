@@ -30,7 +30,7 @@ using namespace gpr;
 void HandleSignals::runSlot(QString in) {
 
     QUrl url(in);
-    QFile file(url.path());
+    QFile file(url.toLocalFile());
 
     LineSolver line_solver;
 
@@ -89,18 +89,17 @@ void HandleSignals::runSlot(QString in) {
             z_point_c.get_address().double_value()
         };
 
-
         for (block &j: p) {
 
             bool check_line = false;
-            string gcode_line = "";
+            block gcode_block(false, {g0, x_point_c, y_point_c, z_point_c});
 
             for (chunk &k: j) {
                 switch(k.tp()) {
 
                 case CHUNK_TYPE_WORD_ADDRESS:
-                    // cout << "WORD ADDRESS ";
-                    // cout << k.get_word() << endl;
+                    cout << "WORD ADDRESS ";
+                    cout << k.get_word() << endl;
 
                     if (k.get_word() == 'X') {
                         if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
