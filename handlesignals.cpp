@@ -22,7 +22,7 @@
 
 #include "handlesignals.h"
 #include "linesolver.h"
-#include "parser.h"
+#include "gpr/parser.h"
 
 using namespace std;
 using namespace gpr;

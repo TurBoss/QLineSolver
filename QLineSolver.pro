@@ -13,8 +13,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        gcode_program.cpp \
-        parser.cpp \
+        backend.cpp \
+        gpr/gcode_program.cpp \
+        gpr/parser.cpp \
         handlesignals.cpp \
         linesolver.cpp \
         main.cpp
@@ -33,12 +34,16 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    gcode_program.h \
-    parser.h \
+    backend.h \
+    gpr/gcode_program.h \
+    gpr/parser.h \
     handlesignals.h \
     linesolver.h
 
 DISTFILES += \
     LICENSE/LICENSE.md \
     LICENSE/gpl-3.0.md \
-    example/sample.ngc
+    README.md \
+    example/sample.ngc \
+    images/bg.svg \
+    main.qml
