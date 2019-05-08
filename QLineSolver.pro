@@ -1,6 +1,8 @@
 QT += quick
 QT += multimedia
+
 CONFIG += c++11
+CONFIG += resources_big
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -19,7 +21,7 @@ SOURCES += \
         gpr/parser.cpp \
         handlesignals.cpp \
         linesolver.cpp \
-        main.cpp
+        main.cpp \
 
 RESOURCES += qml.qrc
 
@@ -39,7 +41,7 @@ HEADERS += \
     gpr/gcode_program.h \
     gpr/parser.h \
     handlesignals.h \
-    linesolver.h
+    linesolver.h \
 
 DISTFILES += \
     LICENSE/LICENSE.md \
@@ -49,15 +51,27 @@ DISTFILES += \
     images/bg.svg \
     main.qml \
     music/CT_BOSS.MOD \
+    music/CT_BOSS.ogg \
     music/Cv_boss.mod \
+    music/Cv_boss.ogg \
+    music/FINALBAT.ogg \
     music/FINALBAT.s3m \
     music/Fr_boss.mod \
+    music/Fr_boss.ogg \
     music/ICEFRONT.S3M \
+    music/ICEFRONT.ogg \
+    music/Wood.ogg \
     music/Wood.s3m \
-    music/amblight.xm \
+    music/amblight.ogg \
+    music/cave.ogg \
     music/cave.xm \
+    music/cave06.ogg \
     music/cave06.s3m \
+    music/cavern.ogg \
     music/cavern.xm \
     music/fear2.mod \
+    music/fear2.ogg \
+    music/iller_knarkloader_final.ogg \
     music/iller_knarkloader_final.xm \
+    music/rpg_bat1.ogg \
     music/rpg_bat1.xm

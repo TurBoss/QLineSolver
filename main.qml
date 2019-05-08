@@ -24,11 +24,6 @@ import QtMultimedia 5.8
 ApplicationWindow {
     signal runSignal(string file_url)
 
-    signal volumeSignal()
-    signal pauseSignal()
-    signal playSignal()
-    signal nextSignal()
-
     id: root
     visible: true
     width: 600
@@ -47,7 +42,33 @@ ApplicationWindow {
 
     Audio {
         id: audioPlayer
-        source: "music/jaume.wav"
+        autoLoad: true
+        autoPlay: true
+        loops: Audio.Infinite
+        volume: 0.5
+        // source: "qrc:/music/amblight.ogg";
+        playlist: Playlist {
+            id: playlist
+            PlaylistItem { source: "qrc:/music/amblight.ogg"; }
+            PlaylistItem { source: "qrc:/music/cave.ogg"; }
+            PlaylistItem { source: "qrc:/music/cave06.ogg"; }
+            PlaylistItem { source: "qrc:/music/cavern.ogg"; }
+            PlaylistItem { source: "qrc:/music/fear2.ogg"; }
+            PlaylistItem { source: "qrc:/music/iller_knarkloader_final.ogg"; }
+            PlaylistItem { source: "qrc:/music/rpg_bat1.ogg"; }
+            PlaylistItem { source: "qrc:/music/CT_BOSS.ogg"; }
+            PlaylistItem { source: "qrc:/music/Cv_boss.ogg"; }
+            PlaylistItem { source: "qrc:/music/FINALBAT.ogg"; }
+            PlaylistItem { source: "qrc:/music/Fr_boss.ogg"; }
+            PlaylistItem { source: "qrc:/music/ICEFRONT.ogg"; }
+            PlaylistItem { source: "qrc:/music/Wood.ogg"; }
+        }
+        onError: {
+            consol.log("ERROR")
+        }
+        onPlaying: {
+            console.log("PLAYING")
+        }
     }
 
     MouseArea {
@@ -105,7 +126,7 @@ ApplicationWindow {
             z: -1
             anchors.rightMargin: 0;
             anchors.bottomMargin: 0;
-            source: "images/bg.svg"
+            source: "qrc:/images/bg.svg"
             fillMode: Image.PreserveAspectCrop;
             anchors.fill: parent;
             opacity: 0.8
@@ -145,7 +166,7 @@ ApplicationWindow {
                     y: 4
                     width: 110
                     height: 35
-                    source: "images/miniplayer.svg"
+                    source: "qrc:/images/miniplayer.svg"
                     fillMode: Image.Stretch
 
                     Image {
@@ -154,7 +175,7 @@ ApplicationWindow {
                         y: 5
                         width: 19
                         height: 25
-                        source: "images/volumen.svg"
+                        source: "qrc:/images/volumen.svg"
                         fillMode: Image.PreserveAspectFit
                     }
                 }
@@ -165,7 +186,10 @@ ApplicationWindow {
                     y: 8
                     width: 33
                     height: 27
-                    onClicked: {audioPlayer.volume = 1.0}
+                    onClicked: {
+                        audioPlayer.volume = 1.0
+                        console.log("VOLUME")
+                    }
                 }
 
                 MouseArea {
@@ -174,7 +198,10 @@ ApplicationWindow {
                     y: 9
                     width: 22
                     height: 26
-                    onClicked: {audioPlayer.pause()}
+                    onClicked: {
+                        audioPlayer.pause()
+                        console.log("PAUSE")
+                    }
                 }
 
                 MouseArea {
@@ -183,7 +210,10 @@ ApplicationWindow {
                     y: 9
                     width: 25
                     height: 26
-                    onClicked: {audioPlayer.play()}
+                    onClicked: {
+                        audioPlayer.play()
+                        console.log("PLAY")
+                    }
                 }
 
                 MouseArea {
@@ -192,6 +222,9 @@ ApplicationWindow {
                     y: 9
                     width: 25
                     height: 26
+                    onClicked: {
+                        console.log("NEXT")
+                    }
                 }
             }
         }
