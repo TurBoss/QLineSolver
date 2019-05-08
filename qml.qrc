@@ -2,21 +2,5 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>images/bg.svg</file>
-        <file>images/player.svg</file>
-        <file>images/miniplayer.svg</file>
-        <file>images/volumen.svg</file>
-        <file>music/amblight.ogg</file>
-        <file>music/cave.ogg</file>
-        <file>music/cave06.ogg</file>
-        <file>music/cavern.ogg</file>
-        <file>music/CT_BOSS.ogg</file>
-        <file>music/Cv_boss.ogg</file>
-        <file>music/fear2.ogg</file>
-        <file>music/FINALBAT.ogg</file>
-        <file>music/Fr_boss.ogg</file>
-        <file>music/ICEFRONT.ogg</file>
-        <file>music/iller_knarkloader_final.ogg</file>
-        <file>music/rpg_bat1.ogg</file>
-        <file>music/Wood.ogg</file>
     </qresource>
 </RCC>

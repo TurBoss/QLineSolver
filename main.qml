@@ -19,7 +19,6 @@ import QtQuick.Window 2.12
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
-import QtMultimedia 5.8
 
 ApplicationWindow {
     signal runSignal(string file_url)
@@ -40,36 +39,6 @@ ApplicationWindow {
 
     flags: Qt.Window | Qt.FramelessWindowHint
 
-    Audio {
-        id: audioPlayer
-        autoLoad: true
-        autoPlay: true
-        loops: Audio.Infinite
-        volume: 0.5
-        // source: "qrc:/music/amblight.ogg";
-        playlist: Playlist {
-            id: playlist
-            PlaylistItem { source: "qrc:/music/amblight.ogg"; }
-            PlaylistItem { source: "qrc:/music/cave.ogg"; }
-            PlaylistItem { source: "qrc:/music/cave06.ogg"; }
-            PlaylistItem { source: "qrc:/music/cavern.ogg"; }
-            PlaylistItem { source: "qrc:/music/fear2.ogg"; }
-            PlaylistItem { source: "qrc:/music/iller_knarkloader_final.ogg"; }
-            PlaylistItem { source: "qrc:/music/rpg_bat1.ogg"; }
-            PlaylistItem { source: "qrc:/music/CT_BOSS.ogg"; }
-            PlaylistItem { source: "qrc:/music/Cv_boss.ogg"; }
-            PlaylistItem { source: "qrc:/music/FINALBAT.ogg"; }
-            PlaylistItem { source: "qrc:/music/Fr_boss.ogg"; }
-            PlaylistItem { source: "qrc:/music/ICEFRONT.ogg"; }
-            PlaylistItem { source: "qrc:/music/Wood.ogg"; }
-        }
-        onError: {
-            consol.log("ERROR")
-        }
-        onPlaying: {
-            console.log("PLAYING")
-        }
-    }
 
     MouseArea {
         anchors.fill: parent;
@@ -101,7 +70,7 @@ ApplicationWindow {
 
         width: parent.width
         height: parent.height
-        color: "#000000"
+        color: "#00000000"
         radius: 20
         gradient: Gradient {
             GradientStop {
@@ -135,9 +104,9 @@ ApplicationWindow {
         Text {
             id: element
             x: 206
-            y: 140
-            width: 331
-            height: 58
+            y: 41
+            width: 172
+            height: 34
             color: "#ffa500"
             text: qsTr("QLineSolver")
             visible: true
@@ -146,92 +115,12 @@ ApplicationWindow {
             font.family: "Arial"
             font.bold: true
             z: 2
-            font.pixelSize: 48
-
-            Rectangle {
-                id: rectangle
-                x: 242
-                y: -128
-                width: 140
-                height: 45
-                color: "#b3000000"
-                radius: 20
-                border.color: "#000000"
-                opacity: 1
-                border.width: 3
-
-                Image {
-                    id: image
-                    x: 16
-                    y: 4
-                    width: 110
-                    height: 35
-                    source: "qrc:/images/miniplayer.svg"
-                    fillMode: Image.Stretch
-
-                    Image {
-                        id: image1
-                        x: 12
-                        y: 5
-                        width: 19
-                        height: 25
-                        source: "qrc:/images/volumen.svg"
-                        fillMode: Image.PreserveAspectFit
-                    }
-                }
-
-                MouseArea {
-                    id: volumeArea
-                    x: 16
-                    y: 8
-                    width: 33
-                    height: 27
-                    onClicked: {
-                        audioPlayer.volume = 1.0
-                        console.log("VOLUME")
-                    }
-                }
-
-                MouseArea {
-                    id: pauseArea
-                    x: 49
-                    y: 9
-                    width: 22
-                    height: 26
-                    onClicked: {
-                        audioPlayer.pause()
-                        console.log("PAUSE")
-                    }
-                }
-
-                MouseArea {
-                    id: playArea
-                    x: 72
-                    y: 9
-                    width: 25
-                    height: 26
-                    onClicked: {
-                        audioPlayer.play()
-                        console.log("PLAY")
-                    }
-                }
-
-                MouseArea {
-                    id: nextArea
-                    x: 96
-                    y: 9
-                    width: 25
-                    height: 26
-                    onClicked: {
-                        console.log("NEXT")
-                    }
-                }
-            }
+            font.pixelSize: 27
         }
 
         Text {
             x: 206
-            y: 44
+            y: 99
             width: 125
             height: 27
             color: "orange"
@@ -247,7 +136,7 @@ ApplicationWindow {
             color: "orange"
             id: filename
             x: 206
-            y: 99
+            y: 155
             width: 336
             height: 27
             text: qsTr("None")

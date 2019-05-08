@@ -34,8 +34,6 @@ void HandleSignals::runSlot(QString in) {
 
     LineSolver line_solver;
 
-
-
     if(!file.exists()) {
         qDebug() << url.path() << " not found ...";
         return;
@@ -46,7 +44,6 @@ void HandleSignals::runSlot(QString in) {
 
         string file_content = stream.readAll().toUtf8().constData();
         gcode_program p = parse_gcode(file_content);
-
 
         if (p.get_block(0).get_chunk(0) == make_percent_chunk()) {
             qDebug() << "ISO FADAL" << endl;
@@ -98,10 +95,19 @@ void HandleSignals::runSlot(QString in) {
                 switch(k.tp()) {
 
                 case CHUNK_TYPE_WORD_ADDRESS:
-                    cout << "WORD ADDRESS ";
-                    cout << k.get_word() << endl;
 
-                    if (k.get_word() == 'X') {
+                    if (k.get_word() == 'G') {
+                        if (k.get_address().tp() == ADDRESS_TYPE_INTEGER) {
+                            if ((k.get_address().int_value() == 0)
+                                    or (k.get_address().int_value() == 1)
+                                    or (k.get_address().int_value() == 2)
+                                    or (k.get_address().int_value() == 3)) {
+                                active_modal = k;
+                            }
+                        }
+                    }
+
+                    else if (k.get_word() == 'X') {
                         if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
                             // printf("X WORD %f\n", k.get_address().double_value());
                             cp[0] = k.get_address().double_value();
@@ -111,6 +117,7 @@ void HandleSignals::runSlot(QString in) {
                         }
                         check_line = true;
                     }
+
                     else if (k.get_word() == 'Y') {
                         if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
                             // printf("Y WORD %f\n", k.get_address().double_value());
@@ -122,6 +129,7 @@ void HandleSignals::runSlot(QString in) {
                         check_line = true;
 
                     }
+
                     else if (k.get_word() == 'Z') {
                         if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
                             // printf("Z WORD %f\n", k.get_address().double_value());
@@ -132,8 +140,9 @@ void HandleSignals::runSlot(QString in) {
                         }
                         check_line = true;
                     }
+
                     else {
-                        cout << k << endl;
+                        cout << "OTRO " << k << endl;
                     }
                     break;
 
@@ -153,35 +162,33 @@ void HandleSignals::runSlot(QString in) {
             }
             if (check_line){
                 check_line = false;
-                // cout << "CHECK POINT" << endl;
 
-                // printf("P1 X %f Y %f Z %f\n", p1[0], p1[1], p1[2]);
-                // printf("P2 X %f Y %f Z %f\n", p2[0], p2[1], p2[2]);
-                // printf("CP X %f Y %f Z %f\n", cp[0], cp[1], cp[2]);
+                if ((active_modal == g0) or (active_modal == g1)) {
+                    cout << "FOUND G1 or G0" << endl;
+                    cout << "just after G2 IGNORING" << endl;
 
-                bool result = line_solver.checkPoint(p1, p2, cp);
+                    bool result = line_solver.checkPoint(p1, p2, cp);
 
-                if (!result) {
-                    chunk x_result = make_word_double('X', cp[0]);
-                    chunk y_result = make_word_double('Y', cp[1]);
-                    chunk z_result = make_word_double('Z', cp[2]);
+                    if (!result) {
+                        chunk x_result = make_word_double('X', cp[0]);
+                        chunk y_result = make_word_double('Y', cp[1]);
+                        chunk z_result = make_word_double('Z', cp[2]);
 
-                    cout  << x_result << y_result << z_result << endl;
+                        cout  << x_result << y_result << z_result << endl;
 
-                    // block result_block = make
-                }
-
+                        // block result_block = make
+                    }}
                 // printf("result = %d\n", result);
-
-                p1[0] = p2[0];
-                p1[1] = p2[1];
-                p1[2] = p2[2];
-
-                p2[0] = cp[0];
-                p2[1] = cp[1];
-                p2[2] = cp[2];
-
             }
+
+            p1[0] = p2[0];
+            p1[1] = p2[1];
+            p1[2] = p2[2];
+
+            p2[0] = cp[0];
+            p2[1] = cp[1];
+            p2[2] = cp[2];
+
         }
     }
 
