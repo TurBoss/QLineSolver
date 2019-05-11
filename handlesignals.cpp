@@ -213,7 +213,12 @@ void HandleSignals::runSlot(QString in) {
                     check_line = false;
 
                     if (active_modal == g1) {
-                        cout << "FOUND G1" << endl;
+                        //cout << "FOUND G1" << endl;
+
+                        printf("\nP1 X %f Y %f Z %f\n", p1[0], p1[1], p1[2]);
+                        printf("P2 X %f Y %f Z %f\n", p2[0], p2[1], p2[2]);
+                        printf("CP X %f Y %f Z %f\n", cp[0], cp[1], cp[2]);
+
 
                         bool result = line_solver.checkPoint(p1, p2, cp);
 
@@ -233,7 +238,11 @@ void HandleSignals::runSlot(QString in) {
                             // block result_block = make
                         }
                         printf("result = %d\n", result);
+                        printf("------------------------\n");
                     }
+
+
+
                 }
 
                 p1[0] = p2[0];
@@ -243,8 +252,6 @@ void HandleSignals::runSlot(QString in) {
                 p2[0] = cp[0];
                 p2[1] = cp[1];
                 p2[2] = cp[2];
-
-                output_stream << endl;
             }
         }
     }
