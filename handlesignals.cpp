@@ -86,109 +86,166 @@ void HandleSignals::runSlot(QString in) {
             z_point_c.get_address().double_value()
         };
 
-        for (block &j: p) {
+        QString filename="/home/turboss/Test/output.tap";
+        QFile file(filename);
+        if ( file.open(QIODevice::ReadWrite) )
+        {
+            QTextStream output_stream( &file );
 
-            bool check_line = false;
-            block gcode_block(false, {g0, x_point_c, y_point_c, z_point_c});
+            for (block &j: p) {
 
-            for (chunk &k: j) {
-                switch(k.tp()) {
+                bool check_line = false;
 
-                case CHUNK_TYPE_WORD_ADDRESS:
+                // block gcode_block(false, {g0, x_point_c, y_point_c, z_point_c});
 
-                    if (k.get_word() == 'G') {
-                        if (k.get_address().tp() == ADDRESS_TYPE_INTEGER) {
-                            if ((k.get_address().int_value() == 0)
-                                    or (k.get_address().int_value() == 1)
-                                    or (k.get_address().int_value() == 2)
-                                    or (k.get_address().int_value() == 3)) {
-                                active_modal = k;
+                for (chunk &k: j) {
+                    switch(k.tp()) {
+
+                    case CHUNK_TYPE_WORD_ADDRESS:
+
+                        if (k.get_word() == 'G') {
+                            if (k.get_address().tp() == ADDRESS_TYPE_INTEGER) {
+                                if ((k.get_address().int_value() == 0)
+                                        or (k.get_address().int_value() == 2)
+                                        or (k.get_address().int_value() == 3)) {
+                                    output_stream << k.get_word() << k.get_address().int_value();
+                                    active_modal = k;
+                                }
+                                else if (k.get_address().int_value() == 1) {
+                                    active_modal = k;
+                                    check_line = true;
+
+                                }
+                                else {
+                                    output_stream << k.get_word() << k.get_address().int_value();
+                                }
+                            }
+                            else if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
+                                output_stream << k.get_word() << k.get_address().double_value();
                             }
                         }
-                    }
 
-                    else if (k.get_word() == 'X') {
-                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
-                            // printf("X WORD %f\n", k.get_address().double_value());
-                            cp[0] = k.get_address().double_value();
-                        } else {
-                            // printf("X WORD %d\n", k.get_address().int_value());
-                            cp[0] = k.get_address().int_value();
+                        else if (k.get_word() == 'X') {
+                            cout << active_modal;
+                            if (active_modal == g1){
+                                if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
+                                    cp[0] = k.get_address().double_value();
+                                } else {
+                                    cp[0] = k.get_address().int_value();
+                                }
+                                check_line = true;
+                            }
+                            else {
+                                if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
+                                    output_stream << k.get_word() << k.get_address().double_value();
+                                }
+                                else if (k.get_address().tp() == ADDRESS_TYPE_INTEGER) {
+                                    output_stream << k.get_word() << k.get_address().int_value();
+                                }
+                            }
                         }
-                        check_line = true;
-                    }
 
-                    else if (k.get_word() == 'Y') {
-                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
-                            // printf("Y WORD %f\n", k.get_address().double_value());
-                            cp[1] = k.get_address().double_value();
-                        } else {
-                            // printf("Y WORD %d\n", k.get_address().int_value());
-                            cp[1] = k.get_address().int_value();
+                        else if (k.get_word() == 'Y') {
+                            if (active_modal == g1){
+                                if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
+                                    cp[1] = k.get_address().double_value();
+                                } else {
+                                    cp[1] = k.get_address().int_value();
+                                }
+                                check_line = true;
+                            }
+                            else {
+                                if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
+                                    output_stream << k.get_word() << k.get_address().double_value();
+                                }
+                                else if (k.get_address().tp() == ADDRESS_TYPE_INTEGER) {
+                                    output_stream << k.get_word() << k.get_address().int_value();
+                                }
+                            }
                         }
-                        check_line = true;
 
-                    }
-
-                    else if (k.get_word() == 'Z') {
-                        if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
-                            // printf("Z WORD %f\n", k.get_address().double_value());
-                            cp[2] = k.get_address().double_value();
-                        } else {
-                            // printf("Z WORD %d\n", k.get_address().int_value());
-                            cp[2] = k.get_address().int_value();
+                        else if (k.get_word() == 'Z') {
+                            if (active_modal == g1){
+                                if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
+                                    cp[2] = k.get_address().double_value();
+                                } else {
+                                    cp[2] = k.get_address().int_value();
+                                }
+                                check_line = true;
+                            }
+                            else {
+                                if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
+                                    output_stream << k.get_word() << k.get_address().double_value();
+                                }
+                                else if (k.get_address().tp() == ADDRESS_TYPE_INTEGER) {
+                                    output_stream << k.get_word() << k.get_address().int_value();
+                                }
+                            }
                         }
-                        check_line = true;
+
+                        else {
+                            output_stream << k.get_word();
+
+                            if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
+                                output_stream << k.get_address().double_value();
+                            } else {
+                                output_stream << k.get_address().int_value();
+                            }
+                        }
+                        break;
+
+                    case CHUNK_TYPE_WORD:
+
+                        printf("WORD %d\n", k.get_word());
+
+                        break;
+                    case CHUNK_TYPE_COMMENT:
+                        output_stream << "(" << k.get_comment_text().c_str() << ")";
+                        break;
+
+                    default:
+                        cout << k << " ";
                     }
-
-                    else {
-                        cout << "OTRO " << k << endl;
-                    }
-                    break;
-
-                case CHUNK_TYPE_WORD:
-
-                    printf("WORD %d\n", k.get_word());
-
-                    break;
-                case CHUNK_TYPE_COMMENT:
-                    printf("COMMENT %s\n", k.get_comment_text().c_str());
-                    break;
-
-                default:
-
-                    cout << k << " ";
                 }
+
+
+                if (check_line){
+                    check_line = false;
+
+                    if (active_modal == g1) {
+                        cout << "FOUND G1" << endl;
+
+                        bool result = line_solver.checkPoint(p1, p2, cp);
+
+                        if (!result) {
+                            chunk x_result = make_word_double('X', cp[0]);
+                            chunk y_result = make_word_double('Y', cp[1]);
+                            chunk z_result = make_word_double('Z', cp[2]);
+
+                            cout  << x_result << y_result << z_result << endl;
+
+                            output_stream << active_modal.get_word() << active_modal.get_address().int_value();
+
+                            output_stream << x_result.get_word() << x_result.get_address().double_value();
+                            output_stream << y_result.get_word() << y_result.get_address().double_value();
+                            output_stream << z_result.get_word() << z_result.get_address().double_value();
+
+                            // block result_block = make
+                        }
+                        printf("result = %d\n", result);
+                    }
+                }
+
+                p1[0] = p2[0];
+                p1[1] = p2[1];
+                p1[2] = p2[2];
+
+                p2[0] = cp[0];
+                p2[1] = cp[1];
+                p2[2] = cp[2];
+
+                output_stream << endl;
             }
-            if (check_line){
-                check_line = false;
-
-                if ((active_modal == g0) or (active_modal == g1)) {
-                    cout << "FOUND G1 or G0" << endl;
-                    cout << "just after G2 IGNORING" << endl;
-
-                    bool result = line_solver.checkPoint(p1, p2, cp);
-
-                    if (!result) {
-                        chunk x_result = make_word_double('X', cp[0]);
-                        chunk y_result = make_word_double('Y', cp[1]);
-                        chunk z_result = make_word_double('Z', cp[2]);
-
-                        cout  << x_result << y_result << z_result << endl;
-
-                        // block result_block = make
-                    }}
-                // printf("result = %d\n", result);
-            }
-
-            p1[0] = p2[0];
-            p1[1] = p2[1];
-            p1[2] = p2[2];
-
-            p2[0] = cp[0];
-            p2[1] = cp[1];
-            p2[2] = cp[2];
-
         }
     }
 
