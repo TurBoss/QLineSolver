@@ -240,9 +240,6 @@ void HandleSignals::runSlot(QString in) {
                         printf("result = %d\n", result);
                         printf("------------------------\n");
                     }
-
-
-
                 }
 
                 p1[0] = p2[0];
@@ -254,13 +251,14 @@ void HandleSignals::runSlot(QString in) {
                 p2[2] = cp[2];
             }
         }
+
+        file.close();
     }
 
     else {
         qDebug() << url.path() << " read error ...";
     }
 
-    file.close();
 
     //    LineSolver line_solver;
 
