@@ -47,6 +47,6 @@ DISTFILES += \
     LICENSE/LICENSE.md \
     LICENSE/gpl-3.0.md \
     README.md \
-    example/sample.ngc \
+    example/plane.tap \
     images/bg.svg \
     main.qml \
