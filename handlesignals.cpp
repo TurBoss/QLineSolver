@@ -95,6 +95,8 @@ void HandleSignals::runSlot(QString in) {
             for (block &j: p) {
 
                 bool check_line = false;
+                bool requires_newline = false;
+
 
                 // block gcode_block(false, {g0, x_point_c, y_point_c, z_point_c});
 
@@ -110,6 +112,7 @@ void HandleSignals::runSlot(QString in) {
                                         or (k.get_address().int_value() == 3)) {
                                     output_stream << k.get_word() << k.get_address().int_value();
                                     active_modal = k;
+                                    requires_newline = true;
                                 }
                                 else if (k.get_address().int_value() == 1) {
                                     active_modal = k;
@@ -118,6 +121,7 @@ void HandleSignals::runSlot(QString in) {
                                 }
                                 else {
                                     output_stream << k.get_word() << k.get_address().int_value();
+                                    requires_newline = true;
                                 }
                             }
                             else if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
@@ -188,9 +192,11 @@ void HandleSignals::runSlot(QString in) {
 
                             if (k.get_address().tp() == ADDRESS_TYPE_DOUBLE) {
                                 output_stream << k.get_address().double_value();
-                            } else {
+                            }
+                            else if (k.get_address().tp() == ADDRESS_TYPE_INTEGER) {
                                 output_stream << k.get_address().int_value();
                             }
+                            requires_newline = true;
                         }
                         break;
 
@@ -201,6 +207,7 @@ void HandleSignals::runSlot(QString in) {
                         break;
                     case CHUNK_TYPE_COMMENT:
                         output_stream << "(" << k.get_comment_text().c_str() << ")";
+                        requires_newline = true;
                         break;
 
                     default:
@@ -234,12 +241,19 @@ void HandleSignals::runSlot(QString in) {
                             output_stream << x_result.get_word() << x_result.get_address().double_value();
                             output_stream << y_result.get_word() << y_result.get_address().double_value();
                             output_stream << z_result.get_word() << z_result.get_address().double_value();
+                            requires_newline = true;
 
                             // block result_block = make
                         }
                         printf("result = %d\n", result);
                         printf("------------------------\n");
                     }
+                }
+
+                if (requires_newline) {
+                    requires_newline = false;
+
+                    output_stream << endl;
                 }
 
                 p1[0] = p2[0];
@@ -258,7 +272,6 @@ void HandleSignals::runSlot(QString in) {
     else {
         qDebug() << url.path() << " read error ...";
     }
-
 
     //    LineSolver line_solver;
 
