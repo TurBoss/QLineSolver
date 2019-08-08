@@ -14,8 +14,9 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+#include <fstream>
 
 #include <QFile>
 #include <QUrl>
@@ -40,9 +41,15 @@ void HandleSignals::runSlot(QString in) {
     }
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream stream(&file);
+        QTextStream inPutStream(&file);
 
-        string file_content = stream.readAll().toUtf8().constData();
+        std::string filename="./lineSolverOutput.txt";
+        std::ofstream outputStream;
+        outputStream.open (filename);
+
+        outputStream << "(TurBoss test)" << endl;
+
+        string file_content = inPutStream.readAll().toUtf8().constData();
         gcode_program p = parse_gcode(file_content);
 
         if (p.get_block(0).get_chunk(0) == make_percent_chunk()) {
@@ -89,7 +96,10 @@ void HandleSignals::runSlot(QString in) {
         for (block &j: p) {
 
             bool check_line = false;
+
             block gcode_block(false, {g0, x_point_c, y_point_c, z_point_c});
+            chunk tail;
+            //bool newLine = false;
 
             for (chunk &k: j) {
                 switch(k.tp()) {
@@ -104,6 +114,9 @@ void HandleSignals::runSlot(QString in) {
                                     or (k.get_address().int_value() == 3)) {
                                 active_modal = k;
                             }
+//                            else {
+//                                outputStream << k;
+//                            }
                         }
                     }
 
@@ -143,6 +156,7 @@ void HandleSignals::runSlot(QString in) {
 
                     else {
                         cout << "OTRO " << k << endl;
+                        tail = k;
                     }
                     break;
 
@@ -160,12 +174,12 @@ void HandleSignals::runSlot(QString in) {
                     cout << k << " ";
                 }
             }
+
             if (check_line){
                 check_line = false;
 
                 if ((active_modal == g0) or (active_modal == g1)) {
                     cout << "FOUND G1 or G0" << endl;
-                    cout << "just after G2 IGNORING" << endl;
 
                     bool result = line_solver.checkPoint(p1, p2, cp);
 
@@ -175,6 +189,12 @@ void HandleSignals::runSlot(QString in) {
                         chunk z_result = make_word_double('Z', cp[2]);
 
                         cout  << x_result << y_result << z_result << endl;
+                        if (tail.tp() == CHUNK_TYPE_PERCENT) {
+                            outputStream << active_modal << x_result << y_result << z_result << endl;
+                        }
+                        else {
+                            outputStream << active_modal << x_result << y_result << z_result << tail << endl;
+                        }
 
                         // block result_block = make
                     }}
