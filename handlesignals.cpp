@@ -14,8 +14,9 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+#include <fstream>
 
 #include <QFile>
 #include <QUrl>
@@ -29,68 +30,73 @@ using namespace gpr;
 
 void HandleSignals::runSlot(QString in) {
 
-    QUrl url(in);
-    QFile file(url.toLocalFile());
-
     LineSolver line_solver;
 
-    if(!file.exists()) {
+
+    QUrl url(in);
+    QFile input_file(url.toLocalFile());
+
+    if(!input_file.exists()) {
         qDebug() << url.path() << " not found ...";
         return;
     }
 
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream stream(&file);
+    if (input_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-        string file_content = stream.readAll().toUtf8().constData();
-        gcode_program p = parse_gcode(file_content);
+        QString filename = "output.tap";
+        QFile output_file(filename);
 
-        if (p.get_block(0).get_chunk(0) == make_percent_chunk()) {
-            qDebug() << "ISO FADAL" << endl;
-        }
+        if (output_file.open(QIODevice::ReadWrite | QIODevice::Text) ) {
 
-        // cout << p << endl;
+            QTextStream output_stream( &output_file );
 
-        chunk active_modal;
+            output_stream << "(TurBo test)" << endl;
 
-        const chunk g0 = make_word_int('G', 0);
-        const chunk g1 = make_word_int('G', 1);
-        const chunk g2 = make_word_int('G', 2);
-        const chunk g3 = make_word_int('G', 3);
+            QTextStream input_stream(&input_file);
+            string file_content = input_stream.readAll().toUtf8().constData();
 
-        chunk x_point_1 = make_word_double('X', 0.0);
-        chunk y_point_1 = make_word_double('Y', 0.0);
-        chunk z_point_1 = make_word_double('Z', 0.0);
+            gcode_program p = parse_gcode(file_content);
 
-        chunk x_point_2 = make_word_double('X', 0.0);
-        chunk y_point_2 = make_word_double('Y', 0.0);
-        chunk z_point_2 = make_word_double('Z', 0.0);
+            if (p.get_block(0).get_chunk(0) == make_percent_chunk()) {
+                qDebug() << "ISO FADAL" << endl;
+            }
 
-        chunk x_point_c = make_word_double('X', 0.0);
-        chunk y_point_c = make_word_double('Y', 0.0);
-        chunk z_point_c = make_word_double('Z', 0.0);
+            // cout << p << endl;
 
-        double p1[3] = {
-            x_point_1.get_address().double_value(),
-            y_point_1.get_address().double_value(),
-            z_point_1.get_address().double_value()
-        };
-        double p2[3] = {
-            x_point_2.get_address().double_value(),
-            y_point_2.get_address().double_value(),
-            z_point_2.get_address().double_value()
-        };
-        double cp[3] = {
-            x_point_c.get_address().double_value(),
-            y_point_c.get_address().double_value(),
-            z_point_c.get_address().double_value()
-        };
+            chunk active_modal;
 
-        QString filename="/home/turboss/Test/output.tap";
-        QFile file(filename);
-        if ( file.open(QIODevice::ReadWrite) )
-        {
-            QTextStream output_stream( &file );
+            const chunk g0 = make_word_int('G', 0);
+            const chunk g1 = make_word_int('G', 1);
+            const chunk g2 = make_word_int('G', 2);
+            const chunk g3 = make_word_int('G', 3);
+
+            chunk x_point_1 = make_word_double('X', 0.0);
+            chunk y_point_1 = make_word_double('Y', 0.0);
+            chunk z_point_1 = make_word_double('Z', 0.0);
+
+            chunk x_point_2 = make_word_double('X', 0.0);
+            chunk y_point_2 = make_word_double('Y', 0.0);
+            chunk z_point_2 = make_word_double('Z', 0.0);
+
+            chunk x_point_c = make_word_double('X', 0.0);
+            chunk y_point_c = make_word_double('Y', 0.0);
+            chunk z_point_c = make_word_double('Z', 0.0);
+
+            double p1[3] = {
+                x_point_1.get_address().double_value(),
+                y_point_1.get_address().double_value(),
+                z_point_1.get_address().double_value()
+            };
+            double p2[3] = {
+                x_point_2.get_address().double_value(),
+                y_point_2.get_address().double_value(),
+                z_point_2.get_address().double_value()
+            };
+            double cp[3] = {
+                x_point_c.get_address().double_value(),
+                y_point_c.get_address().double_value(),
+                z_point_c.get_address().double_value()
+            };
 
             for (block &j: p) {
 
@@ -264,9 +270,9 @@ void HandleSignals::runSlot(QString in) {
                 p2[1] = cp[1];
                 p2[2] = cp[2];
             }
+            output_file.close();
         }
-
-        file.close();
+        input_file.close();
     }
 
     else {
